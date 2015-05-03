@@ -9,7 +9,7 @@ Après avoir installé Ubuntu 12.04 via wubi, et configuré celui-ci avec un env
 Environnement de dev et outils
 ------------------------------
 
-Les outils installé sur Ubunut sont :
+Les outils installés sur Ubuntu sont :
 - vim
 - tree
 - git
