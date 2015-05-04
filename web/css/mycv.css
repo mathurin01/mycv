@@ -1,9 +1,14 @@
 body { 
-    padding-top: 40px; 
+    padding-top: 80px;
+     
 }
 
 .footer {
     border-top: 1px solid #ccc;
     padding-top: 10px;
     text-align: center;
+}
+
+.articleTitle:hover, .articleTitle:focus, .categoryTitle:hover, .categoryTitle:focus {
+    text-decoration: none;
 }
