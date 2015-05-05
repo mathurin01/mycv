@@ -2,13 +2,12 @@
 
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
-use Symfony\Component\HttpFoundation\Request;
 
 // Register global error and exception handlers
 ErrorHandler::register();
 ExceptionHandler::register();
 
-// Register service providers.
+// Register service providers
 $app->register(new Silex\Provider\DoctrineServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
@@ -28,9 +27,9 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             'logout' => true,
             'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
             'users' => $app->share(function () use ($app) {
-                return new Mycv\DAO\UserDAO($app['db']);
+                return new MicroCMS\DAO\UserDAO($app['db']);
             }),
-	),
+        ),
     ),
     'security.role_hierarchy' => array(
         'ROLE_ADMIN' => array('ROLE_USER'),
@@ -42,8 +41,8 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 $app->register(new Silex\Provider\FormServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider());
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile' => __DIR__.'/../var/logs/mycv.log',
-    'monolog.name' => 'Mycv',
+    'monolog.logfile' => __DIR__.'/../var/logs/microcms.log',
+    'monolog.name' => 'MicroCMS',
     'monolog.level' => $app['monolog.level']
 ));
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
@@ -53,18 +52,15 @@ if (isset($app['debug']) && $app['debug']) {
     ));
 }
 
-// Register services.
+// Register services
 $app['dao.article'] = $app->share(function ($app) {
-    return new Mycv\DAO\ArticleDAO($app['db']);
+    return new MicroCMS\DAO\ArticleDAO($app['db']);
 });
 $app['dao.user'] = $app->share(function ($app) {
-    return new Mycv\DAO\UserDAO($app['db']);
-});
-$app['dao.category'] = $app->share(function ($app) {
-    return new Mycv\DAO\CategoryDAO($app['db']);
+    return new MicroCMS\DAO\UserDAO($app['db']);
 });
 $app['dao.comment'] = $app->share(function ($app) {
-    $commentDAO = new Mycv\DAO\CommentDAO($app['db']);
+    $commentDAO = new MicroCMS\DAO\CommentDAO($app['db']);
     $commentDAO->setArticleDAO($app['dao.article']);
     $commentDAO->setUserDAO($app['dao.user']);
     return $commentDAO;
@@ -85,11 +81,3 @@ $app->error(function (\Exception $e, $code) use ($app) {
     return $app['twig']->render('error.html.twig', array('message' => $message));
 });
 
-
-// Register JSON data decoder for JSON requests
-$app->before(function (Request $request) {
-    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-        $data = json_decode($request->getContent(), true);
-        $request->request->replace(is_array($data) ? $data : array());
-    }
-});
