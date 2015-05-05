@@ -1,4 +1,5 @@
 body { 
+    min-height: 2000px;
     padding-top: 80px;
      
 }
@@ -12,3 +13,9 @@ body {
 .articleTitle:hover, .articleTitle:focus, .categoryTitle:hover, .categoryTitle:focus {
     text-decoration: none;
 }
+
+.adminTable {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
