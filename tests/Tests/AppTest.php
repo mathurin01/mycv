@@ -1,6 +1,6 @@
 <?php
 
-namespace Mycv\Tests;
+namespace Mycv\Test;
 
 require_once __DIR__.'/../../vendor/autoload.php';
 
